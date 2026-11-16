@@ -16,16 +16,19 @@ class Dataset:
     intervals: list[float] = field(default_factory=list)
     intervaltemps: dict[float, list[float]] = field(default_factory=dict)
 
-    """
-    Override for string output for this dataclass.
-    Changes string to be format as 
-        |Temperature dataset: {filename}
-        |{interval 1} seconds: [temperature list 1]
-        |{interval 2} seconds: [temperature list 2]
-        |........
-    """
+    
 
     def __str__(self) -> str:
+
+        """
+        Override for string output for this dataclass.
+        Changes string to be format as 
+            |Temperature dataset: {filename}
+            |{interval 1} seconds: [temperature list 1]
+            |{interval 2} seconds: [temperature list 2]
+            |........
+        """
+        
         lines = [f"Temperature dataset: {self.file_name}"]
         for interval in self.intervals:
             temperatures = self.intervaltemps.get(interval, [])

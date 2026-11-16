@@ -1,12 +1,14 @@
 """
 This is the main file for the CPU Temperatures Project. 
-It parses the txt file input, then formats the data to be used in future iterations of the program.
-
+Reads a file name from standard input, parses the temperature readings in that
+file into a Dataset, and writes piecewise linear interpolation results to one
+.txt file per core. The paths of those files are stored in `output_files`.
 """
 
 
 import parse_temps
 from temps_data import Dataset 
+import piecewise_linear_interpolation
 
 
 """
@@ -20,11 +22,8 @@ Args:
     temperatures: the temperatures in the users file
 
 Yields:
-    A dataclass object that stores the temperatures at each time for a given set of data in the users' file.
+    A dataclass object that stores the temperatures at each time for a given set of data in the users' file. 
 
-    ----->  Why a dataclass? It will be being used in both the calculations and is generally much easier to handle.
-            It allows for quickly distinguishing datasets apart from eachother and calling information from them piece by piece
-            rather than having all the information dumped if I ever need only segments of the information for future deployments.
 """
 
 file_name = input().strip()
@@ -35,4 +34,18 @@ with open(file_name, "r", encoding="utf-8") as tmp_file:
         file_dataset.intervaltemps[time_step] = temperatures
 
 
-print(file_dataset)
+"""
+Writes one output file per core (core-<n>-output.txt, in the current
+directory). Each line gives the line y = b + m*x that joins two consecutive
+time steps for that core:
+ 
+    {time step i} <= x <= {time step i+1} ; y = {b} + {m} x ; interpolation
+ 
+Args:
+    file_dataset: the Dataset built above.
+ 
+Yields:
+    output_files: the list of paths to the .txt files that were written.
+"""
+
+output_files = piecewise_linear_interpolation.output_interpolation(file_dataset)
