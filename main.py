@@ -45,7 +45,8 @@ Args:
     file_dataset: the Dataset built above.
  
 Yields:
-    output_files: the list of paths to the .txt files that were written.
+    one .txt file per core that holds interpolation data
+        
 """
 
-output_files = piecewise_linear_interpolation.output_interpolation(file_dataset)
+piecewise_linear_interpolation.output_interpolation(file_dataset)

@@ -35,7 +35,7 @@ def calculate_interpolation(interval_0: float, interval_1: float, temp_0: float,
     intercept_b = temp_1 - slope_m * interval_1
     return f"{interval_0:8.0f} <= x <={interval_1:8.0f} ; y ={intercept_b:12.4f} +{slope_m:12.4f} x ; interpolation\n"
 
-def output_interpolation(temps: Dataset) -> list[Path]:
+def output_interpolation(temps: Dataset) -> None:
 
     """
     Write the piecewise linear interpolation for every core to its own file.
@@ -45,7 +45,7 @@ def output_interpolation(temps: Dataset) -> list[Path]:
             cores is taken from the first time step of each pair.
  
     Yields:
-        The list of paths to the per-core output files.
+        None
     """
 
     output_files: list[Path] = []
@@ -63,4 +63,4 @@ def output_interpolation(temps: Dataset) -> list[Path]:
                     f.write(calculate_interpolation(curr_interval, next_interval, temps.intervaltemps[curr_interval][core_n], temps.intervaltemps[next_interval][core_n]))
             if Path(f"core-{core_n}-output.txt") not in output_files:
                 output_files.append(Path(f"core-{core_n}-output.txt"))
-    return output_files
+    return 
